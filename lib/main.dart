@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:thundr_clubs/menu.dart';
+import 'package:thundr_clubs/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
