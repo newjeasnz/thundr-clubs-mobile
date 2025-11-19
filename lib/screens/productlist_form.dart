@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:thundr_clubs/widgets/left_drawer.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:thundr_clubs/screens/menu.dart';
 
 class ProductFormPage extends StatefulWidget {
     const ProductFormPage({super.key});
@@ -30,6 +34,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
   
   @override
   Widget build(BuildContext context){
+    final request = context.watch<CookieRequest>();
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -129,35 +134,41 @@ class _ProductFormPageState extends State<ProductFormPage> {
               // === SAVE BUTTON ===
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Product Saved'),
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("Name: $_name"),
-                              Text("Price: $_price"),
-                              Text("Description: $_description"),
-                              Text("Thumbnail: ${_thumbnail.isNotEmpty ? _thumbnail : "-"}"),
-                              Text("Category: $_category"),
-                              Text("Featured: ${_isFeatured ? "Yes" : "No"}"),
-                            ],
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text("OK"),
-                            ),
-                          ],
-                        ),
+                      final response = await request.postJson(
+                        "https://jessica-tandra-thundrclubs.pbp.cs.ui.ac.id/create-flutter/",
+                        jsonEncode({
+                          "name": _name,
+                          "price": _price,
+                          "description": _description,
+                          "thumbnail": _thumbnail,
+                          "category": _category,
+                          "is_featured": _isFeatured,
+                        }),
                       );
-                      _formKey.currentState!.reset();
+
+                      if (context.mounted) {
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("New Product successfully saved!")),
+                          );
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyHomePage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Something went wrong, please try again."),
+                            ),
+                          );
+                        }
+                      }
                     }
                   },
+
                   child: const Text("Save"),
                 ),
               ),

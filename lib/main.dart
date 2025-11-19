@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:thundr_clubs/screens/menu.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:thundr_clubs/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +13,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: lightningTheme,
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: AppTheme.lightTheme,
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -30,44 +37,28 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
 
-      home: MyHomePage(),
+      home: const LoginPage(),
+      ),
     );
   }
 }
 
-final ThemeData lightningTheme = ThemeData(
-  colorScheme: const ColorScheme(
-    brightness: Brightness.light,
-    primary: Color(0xFF063474),     // Biru tua
-    onPrimary: Colors.white,
-    secondary: Color(0xFF2C3B6A),   // Biru gelap keunguan
-    onSecondary: Colors.white,
-    tertiary: Color(0xFF7185B7),    // Biru abu muda
-    error: Color(0xFFD32F2F),
-    onError: Colors.white,
-    surface:  Colors.white, // Biru muda terang
-    onSurface: Color(0xFF063474), 
-  ),
-  scaffoldBackgroundColor: Colors.white,
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Color(0xFF063474),
-    foregroundColor: Colors.white,
-    elevation: 0,
-  ),
-  textTheme: const TextTheme(
-    bodyLarge: TextStyle(color: Color(0xFF2C3B6A)),
-    bodyMedium: TextStyle(color: Color(0xFF6F6E92)),
-    titleLarge: TextStyle(
-      color: Color(0xFF063474),
-      fontWeight: FontWeight.bold,
+class AppTheme {
+  static const Color accent = Color(0xFFEFA041);
+  static const Color panel = Color(0xFF2A2A2A);
+  static const Color textMain = Color(0xFF241E1E);
+  static const Color textSecondary = Color(0xFF360909);
+
+  static ThemeData lightTheme = ThemeData(
+    primaryColor: accent,
+    colorScheme: ColorScheme.light(
+      primary: accent,
+      secondary: accent,
     ),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: const Color(0xFF063474),
-      foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    scaffoldBackgroundColor: Colors.white,
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(color: textMain),
     ),
-  ),
-);
+    cardColor: panel,
+  );
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thundr_clubs/screens/menu.dart';
 import 'package:thundr_clubs/screens/productlist_form.dart';
+import 'package:thundr_clubs/screens/product_entry_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -8,6 +9,7 @@ class LeftDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    
     return Drawer(
       child: ListView(
         children: [
@@ -20,7 +22,7 @@ class LeftDrawer extends StatelessWidget {
               children: [
                 Text(
                   'Thundr Clubs',
-                    style: theme.textTheme.titleLarge?.copyWith(
+                  style: theme.textTheme.titleLarge?.copyWith(
                     color: theme.colorScheme.onPrimary,
                     fontSize: 26,
                   ),
@@ -36,8 +38,10 @@ class LeftDrawer extends StatelessWidget {
               ],
             ),
           ),
+
           ListTile(
             leading: Icon(Icons.home_outlined, color: theme.colorScheme.primary),
+            splashColor: theme.colorScheme.primary.withValues(alpha: 0.15),
             title: Text('Home', style: theme.textTheme.bodyLarge),
             onTap: () {
               Navigator.pushReplacement(
@@ -46,8 +50,10 @@ class LeftDrawer extends StatelessWidget {
               );
             },
           ),
+
           ListTile(
             leading: Icon(Icons.post_add, color: theme.colorScheme.primary),
+            splashColor: theme.colorScheme.primary.withValues(alpha: 0.15),
             title: Text('Add Product', style: theme.textTheme.bodyLarge),
             onTap: () {
               Navigator.pushReplacement(
@@ -56,6 +62,18 @@ class LeftDrawer extends StatelessWidget {
               );
             },
           ),
+
+          ListTile(
+            leading: const Icon(Icons.add_reaction_rounded),
+            title: const Text('Product List'),
+            onTap: () {
+                // Route to product list page
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProductEntryListPage()),
+                );
+            },
+        ),
         ],
       ),
     );

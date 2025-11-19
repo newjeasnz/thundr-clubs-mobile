@@ -61,7 +61,6 @@ class MyHomePage extends StatelessWidget {
                   ),
 
                   GridView.count(
-                    primary: true,
                     padding: const EdgeInsets.all(20),
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
